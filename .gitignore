@@ -8,3 +8,12 @@ wheels/
 
 # Virtual environments
 .venv
+
+chroma_db/
+storage/
+data/
+
+.html
+.ipynb
+.md
+.rst

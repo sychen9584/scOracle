@@ -5,9 +5,22 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "beautifulsoup4>=4.13.4",
     "chromadb>=1.0.5",
     "llama-index>=0.12.31",
+    "llama-index-embeddings-huggingface>=0.5.3",
+    "llama-index-vector-stores-chroma>=0.4.1",
+    "nbconvert>=7.16.6",
+    "nbformat>=5.10.4",
     "openai>=1.75.0",
+    "ruff>=0.11.6",
     "sentence-transformers>=4.1.0",
     "streamlit>=1.44.1",
+    "tree-sitter>=0.24.0",
+    "tree-sitter-language-pack>=0.7.2",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
 ]
