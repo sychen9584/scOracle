@@ -5,19 +5,14 @@ from llama_index.core import (
 )
 from llama_index.core.node_parser import SentenceSplitter, CodeSplitter
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.vector_stores.chroma import ChromaVectorStore
-import chromadb
+from llama_index.vector_stores.qdrant import QdrantVectorStore
+import os
+import qdrant_client
 import argparse
 
 import doc_loaders
 
 # === CONFIGURATION ===
-# Set the path to the directory containing the documents
-#DATA_DIR_DOCS = "../data/scanpy_docs"
-# Set the path to the directory containing the code
-#DATA_DIR_CODE = "../data/scanpy_src/core"
-#DATA_DIR_TUTORIALs = "../data/scanpy_src/tutorials"
-VECTOR_DB_PATH = "../chroma_db"
 COLLECTION_NAME = "scoracle_index"
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
@@ -27,7 +22,6 @@ def parse_args():
     parse.add_argument("--python-code", type=str, default=None, help="Path to the directory containing python code")
     parse.add_argument("--r-code", type=str, default=None, help="Path to the directory containing R code")
     parse.add_argument("--ipynb", type=str, default=None, help="Path to the directory containing the ipynb notebooks")
-    parse.add_argument("--vector_db_path", type=str, default=VECTOR_DB_PATH, help="Path to the Chroma database")
     parse.add_argument("--collection_name", type=str, default=COLLECTION_NAME, help="Name of the Chroma collection")
     parse.add_argument("--embed_model", type=str, default=EMBED_MODEL, help="Embedding model name")
     
@@ -84,12 +78,18 @@ def index_documents(args):
     embed_model = HuggingFaceEmbedding(model_name=args.embed_model)
     Settings.embed_model = embed_model
     
-    # set up Chroma vector store
-    chroma_client = chromadb.PersistentClient(path=args.vector_db_path)
-    chroma_collection = chroma_client.get_or_create_collection(args.collection_name)
-    vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    # set up qdrant vector store
+    QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
+    if not QDRANT_API_KEY:
+        raise EnvironmentError("❌ QDRANT_API_KEY not set in environment variables.")
     
+    client = qdrant_client.QdrantClient(
+        "https://d4a4a1c8-43a2-4017-ac58-27ee2d6630d7.us-east-1-0.aws.cloud.qdrant.io",
+        api_key=QDRANT_API_KEY
+    )
+    vector_store = QdrantVectorStore(client=client, collection_name=args.collection_name)
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+
     # index documents with SentenceSplitter
     if all_docs:
         index_with_splitter(all_docs, storage_context, SentenceSplitter(chunk_size=500, chunk_overlap=100))
@@ -100,9 +100,9 @@ def index_documents(args):
     if r_docs:
         index_with_splitter(r_docs, storage_context, CodeSplitter(chunk_lines=40, chunk_lines_overlap=15, language="r"))
         
-    # persist index
-    storage_context.persist()
-    print(f"Index built and stored at {args.vector_db_path}")
+    count = client.count(collection_name=args.collection_name).count
+    print(f"Total vectors stored in Qdrant: {count}")
+    print(f"Index built and pushed to Qdrant collection: {args.collection_name}")
         
 if __name__ == "__main__":
     args = parse_args()

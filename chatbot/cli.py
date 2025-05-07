@@ -1,7 +1,6 @@
 from llama_index.core import VectorStoreIndex, StorageContext
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.llms.openai import OpenAI
-from llama_index.core.agent.workflow import FunctionAgent
 import chromadb
 import openai
 import os

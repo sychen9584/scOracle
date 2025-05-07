@@ -3,9 +3,11 @@ import asyncio
 import chromadb
 import os
 import openai
+import qdrant_client
 from llama_index.core import Settings, VectorStoreIndex
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.vector_stores.chroma import ChromaVectorStore
+from llama_index.vector_stores.qdrant import QdrantVectorStore
 from llama_index.llms.openai import OpenAI
 
 # === CONFIGURATION ===
@@ -61,9 +63,20 @@ openai.api_key = openai_api_key
 @st.cache_resource(show_spinner=False)
 def load_index_and_engine(model, temperature, api_key):
     """Load the Chroma vector store"""
-    chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
-    collection = chroma_client.get_or_create_collection(COLLECTION_NAME)
-    vector_store = ChromaVectorStore(chroma_collection=collection)
+    #chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
+    #collection = chroma_client.get_or_create_collection(COLLECTION_NAME)
+    #vector_store = ChromaVectorStore(chroma_collection=collection)
+    #index = VectorStoreIndex.from_vector_store(vector_store)
+    
+    QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
+    if not QDRANT_API_KEY:
+        raise EnvironmentError("❌ QDRANT_API_KEY not set in environment variables.")
+    
+    client = qdrant_client.QdrantClient(
+        "https://d4a4a1c8-43a2-4017-ac58-27ee2d6630d7.us-east-1-0.aws.cloud.qdrant.io",
+        api_key=QDRANT_API_KEY
+    )
+    vector_store = QdrantVectorStore(client=client, collection_name=COLLECTION_NAME)
     index = VectorStoreIndex.from_vector_store(vector_store)
     
     llm = OpenAI(
@@ -75,7 +88,7 @@ def load_index_and_engine(model, temperature, api_key):
             """
         )
     print(f"Using OpenAI model: {model} with temperature: {temperature}")
-    chat_engine = index.as_chat_engine(similarity_top_k=TOP_K, chat_mode="best", llm=llm)    
+    chat_engine = index.as_chat_engine(similarity_top_k=TOP_K, chat_mode="best", llm=llm, streaming=True)    
     return chat_engine
 
 chat_engine = load_index_and_engine(openai_model, temperature, openai_api_key)
@@ -97,9 +110,18 @@ if st.session_state.chat_history[-1]["role"] != "scOracle":
     with st.chat_message("scOracle"):
         with st.spinner("Thinking..."):
             # Generate response
-            response = asyncio.run(chat_engine.achat(user_input))
-            # Save response to chat history
-            st.session_state.chat_history.append({"role": "scOracle", "content": str(response)})
-            # Display response
-            st.write(response.response)
-        
+            stream_response = chat_engine.stream_chat(user_input)
+            full_response = ""
+            stream_placeholder = st.empty()
+            
+            for chunk in stream_response.response_gen:
+                full_response += chunk
+                stream_placeholder.markdown(full_response + "▌")
+
+            stream_placeholder.markdown(full_response)
+
+            # Save complete response to chat history
+            st.session_state.chat_history.append({
+                "role": "scOracle",
+                "content": full_response
+            })
