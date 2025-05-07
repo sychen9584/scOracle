@@ -26,11 +26,14 @@ if "chat_history" not in st.session_state:
     st.session_state["chat_history"] = [
         {"role": "scOracle", "content": "🔬 Welcome to scOracle — Ask about single-cell analysis!"}
     ]
+    
+# === Load default API key from secrets if available ===
+DEFAULT_API_KEY = st.secrets.get("OPENAI_API_KEY", "")
 
 # === Sidebar for OpenAI API Key and LLM parameters ===
 with st.sidebar:
     openai_api_key = st.text_input(
-        "OpenAI API Key", key="openai_api_key", type="password"
+        "OpenAI API Key", key="openai_api_key", type="password", value=DEFAULT_API_KEY,
     )
     "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
     
