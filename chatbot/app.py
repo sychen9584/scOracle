@@ -11,7 +11,6 @@ from llama_index.vector_stores.qdrant import QdrantVectorStore
 from llama_index.llms.openai import OpenAI
 
 # === CONFIGURATION ===
-CHROMA_PATH = "../chroma_db"
 COLLECTION_NAME = "scoracle_index"
 TOP_K = 8
 Settings.embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/all-MiniLM-L6-v2")
@@ -20,6 +19,8 @@ Settings.embed_model = HuggingFaceEmbedding(model_name="sentence-transformers/al
 # === Streamlit UI Setup ===
 st.set_page_config(page_title="scOracle", page_icon="🔮", layout="wide")
 st.title("🔮 scOracle: Your Single-Cell Analysis Assistant")
+
+st.caption("A Retrieval-Augmented Generation (RAG) chatbot assistant that helps users explore, understand, and troubleshoot single-cell data analysis by leveraging real package documentation, tutorials, and source code.")
 
 # === Initialize session state for chat history ===
 if "chat_history" not in st.session_state:
