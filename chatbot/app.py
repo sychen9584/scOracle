@@ -58,7 +58,7 @@ with st.sidebar:
     
     st.markdown(
         """
-        This chatbot is powered by [OpenAI](https://openai.com/) and [Qdrant](https://qdrant.tech/).
+        This chatbot is powered by [OpenAI](https://openai.com/), [LlamaIndex](https://www.llamaindex.ai/), and [Qdrant](https://qdrant.tech/).
         It uses a vector database to retrieve relevant information from the documentation and tutorials.
         
         ### Current Knowledge Base
