@@ -11,9 +11,8 @@ wheels/
 
 chroma_db/
 storage/
-data/
-
-.html
-.ipynb
-.md
-.rst
+data/**/*.py
+data/**/*.html
+data/**/*.ipynb
+data/**/*.md
+data/**/*.rst
