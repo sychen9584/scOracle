@@ -59,8 +59,15 @@ def load_r_code_docs(path):
         doc.metadata["type"] = "r_code"
     return docs
 
-def load_ipynb_docs(path):
-    loader = SimpleDirectoryReader(input_dir=path, recursive=True, required_exts=[".ipynb"])
+def load_cpp_code_docs(path):
+    loader = SimpleDirectoryReader(input_dir=path, recursive=True, required_exts=[".cpp", ".h"])
+    docs = loader.load_data()
+    for doc in docs:
+        doc.metadata["type"] = "c_code"
+    return docs
+
+def load_notebook_docs(path):
+    loader = SimpleDirectoryReader(input_dir=path, recursive=True, required_exts=[".ipynb", '.Rmd', '.md', '.rd'])
     docs = loader.load_data()
     for doc in docs:
         doc.metadata["type"] = "tutorial"

@@ -16,3 +16,4 @@ data/**/*.html
 data/**/*.ipynb
 data/**/*.md
 data/**/*.rst
+data/*
