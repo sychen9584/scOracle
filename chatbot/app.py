@@ -55,6 +55,21 @@ with st.sidebar:
 
     st.session_state.last_model = openai_model
     st.session_state.last_temperature = temperature
+    
+    st.markdown(
+        """
+        This chatbot is powered by [OpenAI](https://openai.com/) and [Qdrant](https://qdrant.tech/).
+        It uses a vector database to retrieve relevant information from the documentation and tutorials.
+        
+        ### Current Knowledge Base
+        - Scanpy
+        - Seurat
+        - Awesome Single Cell
+        
+        ### Disclaimer
+        This is a research prototype. Please use it responsibly and verify any information before acting on it.
+        """
+    )
 
 # === Require API Key ===
 if not openai_api_key:
@@ -66,11 +81,7 @@ openai.api_key = openai_api_key
 # === Retrieve the Chroma vector store, set up LLM and chat engine ===
 @st.cache_resource(show_spinner=False)
 def load_index_and_engine(model, temperature, api_key):
-    """Load the Chroma vector store"""
-    #chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
-    #collection = chroma_client.get_or_create_collection(COLLECTION_NAME)
-    #vector_store = ChromaVectorStore(chroma_collection=collection)
-    #index = VectorStoreIndex.from_vector_store(vector_store)
+    """Load the QDrant vector store"""
     
     QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
     if not QDRANT_API_KEY:
