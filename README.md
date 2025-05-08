@@ -21,15 +21,6 @@ Try it here: [https://scoracle-syc.streamlit.app](https://scoracle-syc.streamlit
 ## App Architecture
 ![screenshot](./images/scoracle_mermaid.png)
 
-## Knowledge Base Roadmap
-- [X] Umbrella analysis framework: Scanpy & Seurat ==> MVP for first iteration
-  - [ ] Can be extended to whole [scVerse ecosystem](https://scverse.org/)
-- [ ] Upstream processing: Cell Ranger, Alevin-Fry, and NF-Core
-- [ ] scATAC-seq analysis: Signac & ArchR
-- [ ] Gene regulatory network inference: SCENIC & scPRINT
-- [ ] Spatial Transcriptomics: squidpy
-- [X] Awesome Single Cell [repo](https://github.com/seandavi/awesome-single-cell)
-
 ---
 
 ## Tech Stack
@@ -41,6 +32,26 @@ Try it here: [https://scoracle-syc.streamlit.app](https://scoracle-syc.streamlit
 | **Embedding** | all-MiniLM-L6-v2 (SBERT)  | Converts text to dense vectors for semantic search                     |
 | **Vector DB** | Qdrant                    | Stores and retrieves embeddings efficiently for fast RAG queries       |
 | **UI**        | Streamlit                 | Provides a clean, interactive web interface                            |
+
+---
+
+## Implementation details
+- [Part 1: Foundations](https://sychen9584.github.io/posts/2025/04/rag-part1/)
+- [Part 2: Data Ingestion & Indexing](https://sychen9584.github.io/posts/2025/05/rag-part2/)
+- [Part 3: CLI Query Engine](https://sychen9584.github.io/posts/2025/05/rag-part3/)
+- [Part 4: Streamlit UI](https://sychen9584.github.io/posts/2025/05/rag-part4/)
+- [Part 5: Scaling Up & Cloud Hosting](https://sychen9584.github.io/posts/2025/05/rag-part5/)
+
+---
+
+## Knowledge Base Roadmap
+- [X] Umbrella analysis framework: Scanpy & Seurat ==> MVP for first iteration
+  - [ ] Can be extended to whole [scVerse ecosystem](https://scverse.org/)
+- [ ] Upstream processing: Cell Ranger, Alevin-Fry, and NF-Core
+- [ ] scATAC-seq analysis: Signac & ArchR
+- [ ] Gene regulatory network inference: SCENIC & scPRINT
+- [ ] Spatial Transcriptomics: squidpy
+- [X] Awesome Single Cell [repo](https://github.com/seandavi/awesome-single-cell)
 
 ---
 
@@ -56,14 +67,5 @@ Try it here: [https://scoracle-syc.streamlit.app](https://scoracle-syc.streamlit
 
 4. **Optimize alignment**  
    Use adapter-based fine-tuning or embedding-level contrastive learning for better domain fit
-
----
-
-## Implementation details
-- [Part 1: Foundations](https://sychen9584.github.io/posts/2025/04/rag-part1/)
-- [Part 2: Data Ingestion & Indexing](https://sychen9584.github.io/posts/2025/05/rag-part2/)
-- [Part 3: CLI Query Engine](https://sychen9584.github.io/posts/2025/05/rag-part3/)
-- [Part 4: Streamlit UI](https://sychen9584.github.io/posts/2025/05/rag-part4/)
-- [Part 5: Scaling Up & Cloud Hosting](https://sychen9584.github.io/posts/2025/05/rag-part5/)
 
 ---
