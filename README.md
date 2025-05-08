@@ -4,48 +4,66 @@
 
 ![screenshot](./images/scoracle_st2.png)
 
+---
+
 ## Features
-- Target audience: Scientists or students navigating single-cell workflows
-- Ingests real docs, notebooks, and repo source code
-- Responds to natural language questions (e.g., "How do I run Leiden clustering?")
-- Offers code snippets, parameter guidance, and troubleshooting tips based on ingested knowledge
-- Modular backend: ability to swap models and tune parameters
+- **Target audience**: Scientists or students navigating single-cell workflows
+- **Knowledge ingestion**: Parses real documentation, notebooks, and source code
+- **Natural language interface**: Ask things like _“How do I run Leiden clustering?”_
+- **Contextual output**: Offers code snippets, parameter insights, and troubleshooting tips
+- **Modular backend**: Easily swap LLM models and parameters
 
 Try it here: [https://scoracle-syc.streamlit.app](https://scoracle-syc.streamlit.app)  
 >  Requires your own OpenAI API key for full functionality.
 
-## App structure
+---
+
+## App Architecture
 ![screenshot](./images/scoracle_mermaid.png)
 
-## Tools to include in the knowledge base
+## Knowledge Base Roadmap
 - [X] Umbrella analysis framework: Scanpy & Seurat ==> MVP for first iteration
-  - [] Can be extended to whole [scVerse ecosystem](https://scverse.org/)
-- [] Upstream processing: Cell Ranger, Alevin-Fry, and NF-Core
-- [] scATAC-seq analysis: Signac & ArchR
-- [] Gene regulatory network inference: SCENIC & scPRINT
-- [] Spatial Transcriptomics: squidpy
+  - [ ] Can be extended to whole [scVerse ecosystem](https://scverse.org/)
+- [ ] Upstream processing: Cell Ranger, Alevin-Fry, and NF-Core
+- [ ] scATAC-seq analysis: Signac & ArchR
+- [ ] Gene regulatory network inference: SCENIC & scPRINT
+- [ ] Spatial Transcriptomics: squidpy
 - [X] Awesome Single Cell [repo](https://github.com/seandavi/awesome-single-cell)
+
+---
 
 ## Tech Stack
 
-|---
-| Component | Choice | Function 
-|:-:|:-:|:-:
-| LLM API | GPT-4o mini | Generates natural language responses conditioned on retrieved context
-| Retrieval | LlamaIndex | Manages document ingestion, chunking, indexing, and context retrieval for RAG
-| Embedding | all-MiniLM-L6-v2 (SBERT) | Converts text into dense vector representations for semantic search
-| Vector DB | Qdrant | Stores and retrieves embeddings efficiently to support fast similarity search
-| UI | Streamlit | Provides a simple, interactive web interface for user input and chatbot output
+| Component    | Choice                    | Purpose                                                                 |
+|--------------|----------------------------|-------------------------------------------------------------------------|
+| **LLM API**   | GPT-4o mini                | Generates answers grounded in retrieved context                        |
+| **Retrieval** | LlamaIndex                | Handles document parsing, chunking, indexing, and context retrieval    |
+| **Embedding** | all-MiniLM-L6-v2 (SBERT)  | Converts text to dense vectors for semantic search                     |
+| **Vector DB** | Qdrant                    | Stores and retrieves embeddings efficiently for fast RAG queries       |
+| **UI**        | Streamlit                 | Provides a clean, interactive web interface                            |
+
+---
 
 ## Future improvements for scOracle
-1. Scaling up the knowledge base
-2. Improve document chunking strategy
-3. Decouple backend and frontend services
-4. Adapter-based fine-tuning or embedding optimization
+1. **Scale up the knowledge base**  
+   Expand to additional tools, methods, and modalities in single-cell analysis
+
+2. **Improve document chunking**  
+   Use smarter, context-aware splitters to preserve semantic boundaries
+
+3. **Decouple backend/frontend**  
+   Move LLM and vector logic to FastAPI, keeping Streamlit as a stateless client
+
+4. **Optimize alignment**  
+   Use adapter-based fine-tuning or embedding-level contrastive learning for better domain fit
+
+---
 
 ## Implementation details
-- [Building a RAG-Powered AI Chatbot for Single-Cell Analysis - Part 1: Foundations](https://sychen9584.github.io/posts/2025/04/rag-part1/)
-- [Building a RAG-Powered AI Chatbot for Single-Cell Analysis - Part 2: Data Ingestion & Indexing](https://sychen9584.github.io/posts/2025/05/rag-part2/)
-- [Building a RAG-Powered AI Chatbot for Single-Cell Analysis - Part 3: CLI Query Engine](https://sychen9584.github.io/posts/2025/05/rag-part3/)
-- [Building a RAG-Powered AI Chatbot for Single-Cell Analysis - Part 4: Streamlit UI](https://sychen9584.github.io/posts/2025/05/rag-part4/)
-- [Building a RAG-Powered AI Chatbot for Single-Cell Analysis - Part 5: Scaling Up & Cloud hosting](https://sychen9584.github.io/posts/2025/05/rag-part5/)
+- [Part 1: Foundations](https://sychen9584.github.io/posts/2025/04/rag-part1/)
+- [Part 2: Data Ingestion & Indexing](https://sychen9584.github.io/posts/2025/05/rag-part2/)
+- [Part 3: CLI Query Engine](https://sychen9584.github.io/posts/2025/05/rag-part3/)
+- [Part 4: Streamlit UI](https://sychen9584.github.io/posts/2025/05/rag-part4/)
+- [Part 5: Scaling Up & Cloud Hosting](https://sychen9584.github.io/posts/2025/05/rag-part5/)
+
+---
